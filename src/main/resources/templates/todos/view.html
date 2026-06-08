@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${todo.title + ' — TodoApp'}">Todo — TodoApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="app">
+
+    <!-- ── Sidebar ─────────────────────────────────────── -->
+    <aside class="sidebar">
+        <a th:href="@{/}" class="sidebar-brand">
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+            </div>
+            <span class="brand-label">TodoApp</span>
+        </a>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">Menu</div>
+
+            <a th:href="@{/}" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                </svg>
+                All Todos
+            </a>
+
+            <a th:href="@{/new}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v8M8 12h8"/>
+                </svg>
+                New Todo
+            </a>
+
+            <div class="divider" style="margin: 12px 0;"></div>
+        </nav>
+
+        <div class="sidebar-footer">
+            &copy; 2026 TodoApp &mdash; All rights reserved.
+        </div>
+    </aside>
+
+    <!-- ── Main ───────────────────────────────────────── -->
+    <main class="main">
+        <div class="main-inner narrow">
+
+            <a th:href="@{/}" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to todos
+            </a>
+
+            <div class="card">
+                <div class="card-body" style="padding: 32px 36px;">
+
+                    <h1 class="detail-title" th:text="${todo.title}">Todo title</h1>
+
+                    <div class="detail-meta">
+                        <span class="detail-meta-item" th:if="${todo.category}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+                            </svg>
+                            <span class="badge badge-category" th:text="${todo.category.name}">Category</span>
+                        </span>
+                        <span class="detail-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            Created
+                            <span th:text="${#temporals.format(todo.createdAt, 'MMM d, yyyy \'at\' h:mm a')}">date</span>
+                        </span>
+                        <span class="detail-meta-item"
+                              th:if="${todo.updatedAt != null and todo.updatedAt != todo.createdAt}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            Updated
+                            <span th:text="${#temporals.format(todo.updatedAt, 'MMM d, yyyy \'at\' h:mm a')}">date</span>
+                        </span>
+                    </div>
+
+                    <div class="detail-tags"
+                         th:if="${todo.tags != null and !todo.tags.isEmpty()}">
+                        <span th:each="tag : ${todo.tags}"
+                              class="badge badge-tag" th:text="${tag.name}">tag</span>
+                    </div>
+
+                    <div class="detail-content" th:text="${todo.content}">Todo content goes here.</div>
+
+                    <div class="detail-actions">
+                        <a th:href="@{/edit/{id}(id=${todo.id})}" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Edit
+                        </a>
+                        <a th:href="@{/delete/{id}(id=${todo.id})}" class="btn btn-danger"
+                           onclick="return confirm('Delete this todo? This cannot be undone.')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                            </svg>
+                            Delete
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

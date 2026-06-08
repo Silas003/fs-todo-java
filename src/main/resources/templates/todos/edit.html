@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Todo — TodoApp</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="app">
+
+    <!-- ── Sidebar ─────────────────────────────────────── -->
+    <aside class="sidebar">
+        <a th:href="@{/}" class="sidebar-brand">
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                </svg>
+            </div>
+            <span class="brand-label">TodoApp</span>
+        </a>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">Menu</div>
+
+            <a th:href="@{/}" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                </svg>
+                All Todos
+            </a>
+
+            <a th:href="@{/new}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 8v8M8 12h8"/>
+                </svg>
+                New Todo
+            </a>
+
+            <div class="divider" style="margin: 12px 0;"></div>
+        </nav>
+
+        <div class="sidebar-footer">
+            &copy; 2026 TodoApp &mdash; All rights reserved.
+        </div>
+    </aside>
+
+    <!-- ── Main ───────────────────────────────────────── -->
+    <main class="main">
+        <div class="main-inner narrow">
+
+            <a th:href="@{/view/{id}(id=${todoId})}" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to todo
+            </a>
+
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-head-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </div>
+                    <span class="card-head-title">Edit Todo</span>
+                </div>
+
+                <div class="card-body">
+                    <form th:action="@{/update/{id}(id=${todoId})}"
+                          th:object="${todoRequest}" method="post">
+
+                        <div class="form-group">
+                            <label class="form-label" for="title">
+                                Title <span>*</span>
+                            </label>
+                            <input id="title" type="text" class="form-control"
+                                   th:field="*{title}"
+                                   placeholder="What needs to be done?"
+                                   required>
+                            <p th:if="${#fields.hasErrors('title')}"
+                               th:errors="*{title}" class="form-error"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="content">
+                                Description <span>*</span>
+                            </label>
+                            <textarea id="content" class="form-control"
+                                      th:field="*{content}" rows="8"
+                                      placeholder="Add details, steps, or notes…"
+                                      required></textarea>
+                            <p th:if="${#fields.hasErrors('content')}"
+                               th:errors="*{content}" class="form-error"></p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="categoryId">Category</label>
+                                <select id="categoryId" class="form-control" th:field="*{categoryId}">
+                                    <option value="">No category</option>
+                                    <option th:each="cat : ${categories}"
+                                            th:value="${cat.id}"
+                                            th:text="${cat.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" for="tags">Tags</label>
+                                <input id="tags" type="text" class="form-control"
+                                       th:field="*{tags}"
+                                       placeholder="work, urgent, personal">
+                                <p class="form-hint">Separate tags with commas.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                                </svg>
+                                Update Todo
+                            </button>
+                            <a th:href="@{/view/{id}(id=${todoId})}" class="btn btn-secondary">Cancel</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</div>
+</body>
+</html>
