@@ -32,9 +32,6 @@ import java.util.Map;
 @PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class CacheConfig {
 
-    // ── Redis connection ─────────────────────────────────────────────────
-    // spring.data.redis.host resolves to ${REDIS_HOST:localhost} from the YAML,
-    // which Spring then resolves against the environment.
 
     @Value("${spring.data.redis.host}")
     private String redisHost;
@@ -42,14 +39,13 @@ public class CacheConfig {
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
-    @Value("${spring.data.redis.timeout:2000ms}")
+    @Value("${spring.data.redis.timeout:2000}")
     private Duration commandTimeout;
 
-    /* Set REDIS_SSL_ENABLED=true for ElastiCache with in-transit TLS enabled. */
     @Value("${REDIS_SSL_ENABLED:false}")
     private boolean redisSslEnabled;
 
-    // ── Lettuce pool ─────────────────────────────────────────────────────
+
 
     @Value("${spring.data.redis.lettuce.pool.max-active:8}")
     private int poolMaxActive;
@@ -60,7 +56,7 @@ public class CacheConfig {
     @Value("${spring.data.redis.lettuce.pool.min-idle:2}")
     private int poolMinIdle;
 
-    @Value("${spring.data.redis.lettuce.pool.max-wait:1000ms}")
+    @Value("${spring.data.redis.lettuce.pool.max-wait:1000}")
     private Duration poolMaxWait;
 
     // ── Cache TTL ────────────────────────────────────────────────────────
