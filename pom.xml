@@ -112,6 +112,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- SnakeYAML — required by YamlPropertiesFactoryBean to load application.yml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+        </dependency>
+
         <!-- Spring Data Redis -->
         <dependency>
             <groupId>org.springframework.data</groupId>
