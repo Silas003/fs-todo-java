@@ -59,14 +59,10 @@ public class CacheConfig {
     @Value("${spring.data.redis.lettuce.pool.max-wait:1000}")
     private Duration poolMaxWait;
 
-    // ── Cache TTL ────────────────────────────────────────────────────────
-    // spring.cache.redis.time-to-live = 60000 (ms) → used as the default TTL.
-    // Per-cache overrides are declared in cacheManager() below.
 
     @Value("${spring.cache.redis.time-to-live:60000}")
     private long defaultTtlMs;
 
-    // ── Connection factory ───────────────────────────────────────────────
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
