@@ -32,7 +32,6 @@ import java.util.Map;
 @PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class CacheConfig {
 
-
     @Value("${spring.data.redis.host}")
     private String redisHost;
 
@@ -40,12 +39,10 @@ public class CacheConfig {
     private int redisPort;
 
     @Value("${spring.data.redis.timeout:2000}")
-    private Duration commandTimeout;
+    private long commandTimeoutMs;
 
     @Value("${REDIS_SSL_ENABLED:false}")
     private boolean redisSslEnabled;
-
-
 
     @Value("${spring.data.redis.lettuce.pool.max-active:8}")
     private int poolMaxActive;
@@ -57,16 +54,19 @@ public class CacheConfig {
     private int poolMinIdle;
 
     @Value("${spring.data.redis.lettuce.pool.max-wait:1000}")
-    private Duration poolMaxWait;
-
+    private long poolMaxWaitMs;
 
     @Value("${spring.cache.redis.time-to-live:60000}")
     private long defaultTtlMs;
 
 
+    // ── Connection factory ───────────────────────────────────────────────
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration server = new RedisStandaloneConfiguration(redisHost, redisPort);
+
+        Duration commandTimeout = Duration.ofMillis(commandTimeoutMs);
 
         LettucePoolingClientConfiguration.LettucePoolingClientConfigurationBuilder builder =
                 LettucePoolingClientConfiguration.builder()
@@ -90,7 +90,7 @@ public class CacheConfig {
         cfg.setMaxTotal(poolMaxActive);
         cfg.setMaxIdle(poolMaxIdle);
         cfg.setMinIdle(poolMinIdle);
-        cfg.setMaxWait(poolMaxWait);
+        cfg.setMaxWait(Duration.ofMillis(poolMaxWaitMs));
         cfg.setTestOnBorrow(true);
         cfg.setTestWhileIdle(true);
         return cfg;
@@ -123,12 +123,9 @@ public class CacheConfig {
                 .disableCachingNullValues();
 
         return RedisCacheManager.builder(connectionFactory)
-                // Default TTL from spring.cache.redis.time-to-live
                 .cacheDefaults(base.entryTtl(Duration.ofMillis(defaultTtlMs)))
                 .withInitialCacheConfigurations(Map.of(
-                        // Single todo lookups — view and edit pages
                         "todo",       base.entryTtl(Duration.ofMinutes(10)),
-                        // Category list — used on every form; changes rarely
                         "categories", base.entryTtl(Duration.ofHours(1))
                 ))
                 .build();
