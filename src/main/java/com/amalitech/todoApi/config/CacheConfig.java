@@ -60,7 +60,6 @@ public class CacheConfig {
     private long defaultTtlMs;
 
 
-    // ── Connection factory ───────────────────────────────────────────────
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
@@ -96,7 +95,6 @@ public class CacheConfig {
         return cfg;
     }
 
-    // ── RedisTemplate ────────────────────────────────────────────────────
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
@@ -113,7 +111,7 @@ public class CacheConfig {
         return template;
     }
 
-    // ── Cache manager ────────────────────────────────────────────────────
+
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
@@ -131,7 +129,7 @@ public class CacheConfig {
                 .build();
     }
 
-    // ── Jackson serializer ───────────────────────────────────────────────
+
 
     private GenericJackson2JsonRedisSerializer jsonSerializer() {
         ObjectMapper mapper = JsonMapper.builder()
