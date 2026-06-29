@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Todos</title>
+    <title>My Todos </title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -28,7 +28,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
                 </svg>
-                All Todos
+                All Todos v1
                 <span class="nav-count" th:if="${totalItems != null}" th:text="${totalItems}">0</span>
             </a>
 
@@ -37,14 +37,14 @@
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M12 8v8M8 12h8"/>
                 </svg>
-                New Todo
+                New Todo v1
             </a>
 
             <div class="divider" style="margin: 12px 0;"></div>
         </nav>
 
         <div class="sidebar-footer">
-            &copy; 2026 TodoApp
+            &copy; 2026 TodoApp v1
         </div>
     </aside>
 
@@ -55,7 +55,7 @@
             <!-- Header -->
             <div class="page-hd">
                 <div>
-                    <h1 class="page-title">My Todos</h1>
+                    <h1 class="page-title">My Todos v1</h1>
                     <p class="page-sub" th:if="${totalItems != null}"
                        th:text="${totalItems + ' item' + (totalItems != 1 ? 's' : '')}"></p>
                 </div>
@@ -63,7 +63,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 5v14M5 12h14"/>
                     </svg>
-                    New Todo
+                    New Todo v1
                 </a>
             </div>
 
