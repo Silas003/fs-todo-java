@@ -36,10 +36,10 @@ public class TodoService implements TodoServiceInterface {
 
     @Override
     @Transactional
-    @Caching(
-        put   = @CachePut(value = "todo", key = "#result.id"),
-        evict = @CacheEvict(value = "todos", allEntries = true)
-    )
+    @Caching(evict = {
+        @CacheEvict(value = "todo",  key = "#result.id"),
+        @CacheEvict(value = "todos", allEntries = true)
+    })
     public Todo createTodo(TodoRequest request) {
         validateTodoRequest(request);
 
@@ -98,16 +98,20 @@ public class TodoService implements TodoServiceInterface {
     @Override
     @Cacheable(value = "todo", key = "#id")
     public Todo getTodoById(Long id) {
-        return todoRepository.findById(id)
+        Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
+        // entity is detached here; replace Hibernate PersistentSet with a plain HashSet
+        // so the cached value deserializes without requiring an active session
+        todo.setTags(new HashSet<>(todo.getTags()));
+        return todo;
     }
 
     @Override
     @Transactional
-    @Caching(
-        put   = @CachePut(value = "todo", key = "#id"),
-        evict = @CacheEvict(value = "todos", allEntries = true)
-    )
+    @Caching(evict = {
+        @CacheEvict(value = "todo",  key = "#id"),
+        @CacheEvict(value = "todos", allEntries = true)
+    })
     public Todo updateTodo(Long id, TodoRequest request) {
         validateTodoRequest(request);
 
