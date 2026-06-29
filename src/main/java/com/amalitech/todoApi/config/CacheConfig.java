@@ -140,6 +140,7 @@ public class CacheConfig {
                                 .allowIfSubType("com.amalitech.todoApi")
                                 .allowIfSubType("java.util")
                                 .allowIfSubType("java.time")
+                                .allowIfSubType("org.hibernate.collection")
                                 .build(),
                         ObjectMapper.DefaultTyping.NON_FINAL
                 )
